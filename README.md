@@ -8,7 +8,7 @@ Extensão para o [Claude Code](https://claude.com/claude-code) que:
 2. **Mostra uma statusline** embaixo do chat com: `🪨 CAVEMAN ULTRA`, o modelo em uso,
    e a pasta que o Claude está enxergando agora.
 
-![statusline](docs/statusline.png)
+<img src="docs/statusline.png" alt="statusline" width="100%">
 
 ## Partes
 
