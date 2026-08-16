@@ -35,21 +35,26 @@ Caveman: "Inline obj prop → new ref → re-render. useMemo."
 - 🌍 **Language-preserving** — replies stay in whatever language you write; only the style compresses.
 - 🔒 **Accuracy-safe** — auto-drops to normal prose for security warnings and destructive-action confirmations.
 - 🧩 **Non-destructive install** — merges into your existing config, fully reversible.
+- 📦 **Zero dependencies** — pure `bash`, nothing to install first.
 
 ## What's inside
 
 | File | Role |
 |------|------|
 | `skills/caveman/` | The `caveman` skill — the compression engine (6 levels). |
-| `statusline-caveman.sh` | Statusline script (reads model + folder from the session JSON via `jq`). |
+| `statusline-caveman.sh` | Statusline script (reads model + folder from the session JSON, pure bash). |
 | `caveman-ultra.md` | Block injected into your `~/.claude/CLAUDE.md` that forces auto-activation. |
 | `install.sh` / `uninstall.sh` | Idempotent, non-destructive install / removal. |
 
 ## Requirements
 
 - [Claude Code](https://claude.com/claude-code)
-- [`jq`](https://jqlang.github.io/jq/) — `brew install jq` · `sudo apt install jq` · `sudo pacman -S jq`
-- `bash`
+- `bash` (3.2+ — the version macOS already ships)
+
+That's it. No `jq`, no runtime, nothing to install first. The statusline parses the
+session JSON in pure bash, and the installer edits `settings.json` with whichever of
+`node` / `python3` / `jq` your machine already has — if it has none, it tells you the
+one line to paste and installs everything else anyway.
 
 ## Install
 
@@ -63,7 +68,7 @@ Restart Claude Code. Every new chat now opens in caveman ultra and the statuslin
 
 The installer is **idempotent** and **non-destructive**:
 - copies the skill to `~/.claude/skills/caveman`
-- copies the statusline script and enables `statusLine` in `~/.claude/settings.json` (via `jq`, preserving the rest)
+- copies the statusline script and enables `statusLine` in `~/.claude/settings.json` (preserving every other key)
 - injects the activation block into `~/.claude/CLAUDE.md` between
   `<!-- BEGIN CAVEMAN ULTRA -->` / `<!-- END CAVEMAN ULTRA -->` markers (re-running only replaces the block, never duplicates)
 
