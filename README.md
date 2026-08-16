@@ -1,31 +1,57 @@
-# 🪨 Caveman Ultra para Claude Code
+<h1 align="center">🪨 Caveman Ultra for Claude Code</h1>
 
-Extensão para o [Claude Code](https://claude.com/claude-code) que:
+<p align="center">
+  <b>Make <a href="https://claude.com/claude-code">Claude Code</a> talk like a smart caveman — ~75% fewer output tokens, 100% technical accuracy.</b><br>
+  Auto-enabled on every new chat. Ships a slick statusline showing mode, model, and current folder.
+</p>
 
-1. **Ativa o modo caveman ultra automaticamente** em todo chat novo — sem você pedir.
-   As respostas saem ultra-comprimidas (≈75% menos tokens), mantendo 100% da precisão
-   técnica (nomes de arquivo, comandos, código e valores literais ficam exatos).
-2. **Mostra uma statusline** embaixo do chat com: `🪨 CAVEMAN ULTRA`, o modelo em uso,
-   e a pasta que o Claude está enxergando agora.
+<p align="center">
+  <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="Claude Code" src="https://img.shields.io/badge/for-Claude%20Code-8A2BE2">
+  <img alt="Shell" src="https://img.shields.io/badge/shell-bash-121011">
+  <img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen">
+</p>
 
-<img src="docs/statusline-v2.png" alt="statusline" width="100%">
+<img src="docs/statusline-v2.png" alt="Caveman Ultra statusline" width="100%">
 
-## Partes
+## Why
 
-| Arquivo | O que é |
-|---------|---------|
-| `skills/caveman/` | A skill `caveman` (6 níveis: lite → ultra + wenyan). O motor da compressão. |
-| `statusline-caveman.sh` | Script da statusline (usa `jq` para ler modelo + pasta do JSON de sessão). |
-| `caveman-ultra.md` | Bloco injetado na sua `~/.claude/CLAUDE.md` que força ativação automática. |
-| `install.sh` / `uninstall.sh` | Instala / remove tudo. Idempotente. |
+Claude's default prose is verbose: articles, hedging, "I'd be happy to help", decorative filler. All of it costs output tokens and slows you down. **Caveman mode strips the fluff and keeps the substance** — file names, commands, code, error strings and paths stay byte-exact. Only the prose gets compressed.
 
-## Requisitos
+Typical result: **~65–75% fewer output tokens** per reply, faster answers, lower cost, same correctness.
 
-- Claude Code
-- `jq` (`sudo pacman -S jq` / `sudo apt install jq` / `brew install jq`)
+```
+Normal:  "Your component re-renders because you create a new object reference
+          each render. Wrapping it in useMemo will fix the issue."
+
+Caveman: "Inline obj prop → new ref → re-render. useMemo."
+```
+
+## Features
+
+- 🧠 **Auto-enabled** — every new Claude Code chat starts in caveman ultra, no command needed.
+- 🎚️ **6 intensity levels** — `lite`, `full`, `ultra`, plus classical-Chinese `wenyan-{lite,full,ultra}`.
+- 📊 **Statusline** — `🪨 CAVEMAN ULTRA | <model> | <current folder>` under your prompt.
+- 🌍 **Language-preserving** — replies stay in whatever language you write; only the style compresses.
+- 🔒 **Accuracy-safe** — auto-drops to normal prose for security warnings and destructive-action confirmations.
+- 🧩 **Non-destructive install** — merges into your existing config, fully reversible.
+
+## What's inside
+
+| File | Role |
+|------|------|
+| `skills/caveman/` | The `caveman` skill — the compression engine (6 levels). |
+| `statusline-caveman.sh` | Statusline script (reads model + folder from the session JSON via `jq`). |
+| `caveman-ultra.md` | Block injected into your `~/.claude/CLAUDE.md` that forces auto-activation. |
+| `install.sh` / `uninstall.sh` | Idempotent, non-destructive install / removal. |
+
+## Requirements
+
+- [Claude Code](https://claude.com/claude-code)
+- [`jq`](https://jqlang.github.io/jq/) — `brew install jq` · `sudo apt install jq` · `sudo pacman -S jq`
 - `bash`
 
-## Instalar
+## Install
 
 ```bash
 git clone https://github.com/Gildaciolopes/claude-caveman-ultra.git
@@ -33,36 +59,51 @@ cd claude-caveman-ultra
 ./install.sh
 ```
 
-Reinicie o Claude Code. Pronto — todo chat novo já abre em caveman ultra e a statusline aparece.
+Restart Claude Code. Every new chat now opens in caveman ultra and the statusline appears.
 
-O instalador é **idempotente** e **não-destrutivo**:
-- copia a skill para `~/.claude/skills/caveman`
-- copia o script e liga `statusLine` no `~/.claude/settings.json` (via `jq`, preservando o resto)
-- injeta o bloco de ativação na `~/.claude/CLAUDE.md` entre marcadores
-  `<!-- BEGIN CAVEMAN ULTRA -->` / `<!-- END CAVEMAN ULTRA -->` (rodar de novo só substitui o bloco, não duplica)
+The installer is **idempotent** and **non-destructive**:
+- copies the skill to `~/.claude/skills/caveman`
+- copies the statusline script and enables `statusLine` in `~/.claude/settings.json` (via `jq`, preserving the rest)
+- injects the activation block into `~/.claude/CLAUDE.md` between
+  `<!-- BEGIN CAVEMAN ULTRA -->` / `<!-- END CAVEMAN ULTRA -->` markers (re-running only replaces the block, never duplicates)
 
-## Usar em outro PC
+## Use on another machine
 
-Mesmo `git clone` + `./install.sh` em qualquer máquina com Claude Code.
+Same `git clone` + `./install.sh` on any machine that has Claude Code.
 
-## Controlar o nível durante uma sessão
+## Control the level during a session
 
 ```
-/caveman lite      # compressão leve
-/caveman full      # padrão
-/caveman ultra     # compressão máxima (o default deste pacote)
-stop caveman       # volta ao normal nesta sessão
+/caveman lite      # light compression
+/caveman full      # default
+/caveman ultra     # maximum compression (this package's default)
+stop caveman       # back to normal prose for this session
 ```
 
-## Remover
+### Intensity levels
+
+| Level | What changes |
+|-------|--------------|
+| `lite` | Drop filler/hedging. Full sentences. Professional but tight. |
+| `full` | Drop articles, fragments OK, short synonyms. Classic caveman. |
+| `ultra` | Bare fragments, abbreviations (DB, auth, fn), arrows for causality. |
+| `wenyan-lite` | Classical Chinese register, light compression. |
+| `wenyan-full` | Maximum 文言文, 80–90% character reduction. |
+| `wenyan-ultra` | Extreme classical compression. |
+
+## Uninstall
 
 ```bash
 ./uninstall.sh
 ```
 
-Remove a skill, o script e a linha `statusLine`, e apaga só o bloco marcado da sua
-`CLAUDE.md`. O resto da sua config fica intacto.
+Removes the skill, the script and the `statusLine` line, and deletes only the marked
+block from your `CLAUDE.md`. The rest of your config stays intact.
 
-## Licença
+## Contributing
 
-MIT.
+Issues and PRs welcome. If it saves you tokens, a ⭐ helps others find it.
+
+## License
+
+[MIT](LICENSE).

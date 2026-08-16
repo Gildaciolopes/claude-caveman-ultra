@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Remove o CAVEMAN ULTRA. Não apaga sua CLAUDE.md — só o bloco marcado.
+# Removes CAVEMAN ULTRA. Does not wipe your CLAUDE.md — only the marked block.
 set -euo pipefail
 
 CLAUDE_DIR="${CLAUDE_DIR:-$HOME/.claude}"
@@ -22,4 +22,4 @@ if [ -f "$CLAUDE_MD" ] && grep -qF "$BEGIN" "$CLAUDE_MD"; then
   mv "$CLAUDE_MD.tmp" "$CLAUDE_MD"
 fi
 
-echo "Removido. Reinicie o Claude Code."
+echo "Removed. Restart Claude Code."
