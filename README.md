@@ -1,7 +1,7 @@
 <h1 align="center">🪨 Caveman Ultra for Claude Code</h1>
 
 <p align="center">
-  <b>Make <a href="https://claude.com/claude-code">Claude Code</a> talk like a smart caveman — ~75% fewer output tokens, 100% technical accuracy.</b><br>
+  <b>Make <a href="https://claude.com/claude-code">Claude Code</a> talk like a smart caveman ~75% fewer output tokens, 100% technical accuracy.</b><br>
   Auto-enabled on every new chat. Ships a slick statusline showing mode, model, and current folder.
 </p>
 
