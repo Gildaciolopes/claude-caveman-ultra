@@ -49,7 +49,7 @@ Caveman: "Inline obj prop → new ref → re-render. useMemo."
 ## Requirements
 
 - [Claude Code](https://claude.com/claude-code)
-- `bash` (3.2+ — the version macOS already ships)
+- `bash` 3.2+ — works on macOS, Linux, WSL and Git Bash on Windows
 
 That's it. No `jq`, no runtime, nothing to install first. The statusline parses the
 session JSON in pure bash, and the installer edits `settings.json` with whichever of
